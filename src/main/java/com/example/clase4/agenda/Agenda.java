@@ -1,7 +1,11 @@
 package com.example.clase4.agenda;
 
-import java.util.HashMap;
-import java.util.List;
+
+
+import com.example.clase4.exceptions.TelefonoNotFoundException;
+import com.example.clase4.shopping.ErrorMessage;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -23,24 +27,36 @@ public class Agenda {
             new HashMap<>();
 
     public static void nuevoContacto(String nombre, int telefono) {
-        //TODO -> implement me
+        miAgenda.put(nombre, telefono);
     }
 
+
     public static void modificarTelefono(String nombre, int telefono) {
-        //TODO -> implement me
+        if(!miAgenda.containsKey(nombre))
+            throw new TelefonoNotFoundException(ErrorMessage.NOT_VALID_TELEFONO_EXCEPTION.getMessage());
+        miAgenda.put(nombre, telefono);
+
     }
 
     public static Integer obtenerTelefono(String nombre) {
-        //TODO -> implement me
-        return null;
+        Integer telefono = miAgenda.get(nombre);
+        if(!miAgenda.containsKey(nombre))
+            throw new TelefonoNotFoundException(ErrorMessage.NOT_VALID_TELEFONO_EXCEPTION.getMessage());
+        return telefono;
     }
 
     public static boolean eliminarTelefono(String nombre) {
-        //TODO -> implement me
-        return false;
+        boolean eliminado;
+        if (!miAgenda.containsKey(nombre)) {
+            throw new TelefonoNotFoundException(ErrorMessage.NOT_VALID_TELEFONO_EXCEPTION.getMessage());
+        }
+        miAgenda.remove(nombre);
+        eliminado = miAgenda().isEmpty();
+        return eliminado;
     }
 
     protected static List<Integer> miAgenda() {
+
         return miAgenda.values().stream().collect(Collectors.toList());
     }
 
